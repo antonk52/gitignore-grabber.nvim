@@ -12,10 +12,10 @@ A plugin to to copy/populate your .gitignore from [github/gitignore](https://git
 
 ## Install
 
-Using `vim-plug`
+Using [`vim-plug`](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug 'antonk52/gitignore-grabber'
+Plug 'antonk52/gitignore-grabber.nvim'
 ```
 
 ## Usage
