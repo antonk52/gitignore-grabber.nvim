@@ -1,5 +1,5 @@
 if !has('nvim-0.5')
-    echoerr "gitignore-grabber.nvim won't work outside neovim lower than 0.5"
+    echoerr "gitignore-grabber.nvim won't work outside neovim older than 0.5"
     finish
 endif
 
