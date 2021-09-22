@@ -1,3 +1,4 @@
+local M = {}
 local function get_gitignores_dir_path()
     local str = debug.getinfo(2, "S").source:sub(2)
     local plugin_lua_dir_path = str:match("(.*/)")
@@ -101,7 +102,7 @@ local function pick_and_place()
     end
 end
 
-local function main(param)
+function M.main(param)
     if param == nil or param == '' then
         pick_and_place()
     else
@@ -109,7 +110,7 @@ local function main(param)
     end
 end
 
-local function autosuggest(arg_lead)
+function M.autosuggest(arg_lead)
     if arg_lead == nil or arg_lead == '' then
         return COMPLETION_LIST
     end
@@ -127,7 +128,4 @@ local function autosuggest(arg_lead)
     return result
 end
 
-return {
-    autosuggest = autosuggest,
-    main = main,
-}
+return M
