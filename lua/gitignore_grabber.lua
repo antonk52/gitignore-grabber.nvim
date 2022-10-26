@@ -2,42 +2,20 @@ local M = {}
 local function get_gitignores_dir_path()
     local str = debug.getinfo(2, "S").source:sub(2)
     local plugin_lua_dir_path = str:match("(.*/)")
-    return plugin_lua_dir_path .. '../gitignore'
-end
-local function find_gitignore_paths(path, depth)
-    local cmd = 'silent ! find "'..path..'" -depth '..depth..' -type f -name "*.gitignore"'
-    return vim.fn.split(vim.fn.execute(cmd), '\n')
+    return vim.fs.normalize(plugin_lua_dir_path .. '../gitignore')
 end
 local gitignore_submodule_path = get_gitignores_dir_path()
 local function get_gitignores_table()
     local result = {}
-
-    -- for some reason a single call returns at most 12* items,
-    -- but there are ~200 available, so breaking into several calls
-    local all_paths = {
-        common = find_gitignore_paths(gitignore_submodule_path, 1),
-        global1 = find_gitignore_paths(gitignore_submodule_path..'/Global', 1),
-        global2 = find_gitignore_paths(gitignore_submodule_path..'/Global', 2),
-        global3 = find_gitignore_paths(gitignore_submodule_path..'/Global', 3),
-        community1 = find_gitignore_paths(gitignore_submodule_path..'/community', 1),
-        community2 = find_gitignore_paths(gitignore_submodule_path..'/community', 2),
-        community3 = find_gitignore_paths(gitignore_submodule_path..'/community', 3),
-    }
-
-    for _,t in pairs(all_paths) do
-        for _,v in pairs(t) do
-            if vim.endswith(v, '.gitignore') == true then
-                -- we know that the path to gitignore submodule will be relative
-                local split = vim.fn.split(v, '../gitignore/')
-                for index,filepath in ipairs(split) do
-                    if index == 2 then
-                        table.insert(result, filepath)
-                    end
-                end
+    local paths = {'', 'community', 'Global'}
+    local submodule_path = get_gitignores_dir_path()
+    for _, p in ipairs(paths) do
+        for name, kind in vim.fs.dir(submodule_path .. '/' .. p) do
+            if kind == 'file' and vim.endswith(name, '.gitignore') then
+                table.insert(result, p..(p == '' and '' or '/')..name);
             end
         end
     end
-
     return result
 end
 local COMPLETION_LIST = get_gitignores_table()
