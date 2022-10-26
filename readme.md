@@ -1,14 +1,15 @@
 # Gitignore-grabber
 
-A plugin to to copy/populate your .gitignore from [github/gitignore](https://github.com/github/gitignore) project with support for [fzf](https://github.com/junegunn/fzf).
+A plugin to to copy/populate your .gitignore from [github/gitignore](https://github.com/github/gitignore) project with support for [telescope](https://github.com/nvim-telescope/telescope.nvim) and [fzf](https://github.com/junegunn/fzf).
 
 ## Requirements
 
-- Neovim 0.5 or above
+- Neovim 0.8 or above
 
 ## Optional requirements
 
-- [fzf.vim](https://github.com/junegunn/fzf.vim) for a GUI fuzzy search
+- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+- [fzf.vim](https://github.com/junegunn/fzf.vim)
 
 ## Install
 

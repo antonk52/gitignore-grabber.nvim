@@ -62,8 +62,27 @@ local function insert_gitignore(choice)
 end
 
 local function pick_and_place()
+    local has_telescope = pcall(function() require('telescope') end)
     local has_fzf = vim.fn.exists('*fzf#run')
-    if has_fzf == 1 then
+    if has_telescope then
+        require('telescope.pickers').new({}, {
+            prompt_title = "Gitignore",
+            finder = require('telescope.finders').new_table {
+                results = COMPLETION_LIST
+            },
+            sorter = require("telescope.config").values.generic_sorter({}),
+            attach_mappings = function(prompt_bufnr)
+                require('telescope.actions').select_default:replace(function()
+                    local selection = require('telescope.actions.state').get_selected_entry()
+                    insert_gitignore(selection[1]);
+
+                    require('telescope.actions').close(prompt_bufnr)
+                end)
+
+                return true
+            end,
+        }):find()
+    elseif has_fzf == 1 then
         local fzf_options = {
             source = COMPLETION_LIST,
             options = {},
